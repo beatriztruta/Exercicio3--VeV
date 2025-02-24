@@ -35,7 +35,9 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Downloaded.Files.Path.Enabled": "false",
+    "JUnit.EquivalenciaTest.executor": "Run",
     "JUnit.SistemadeIngressosTest.executor": "Run",
+    "JUnit.TabelaDeDecisaoTest.executor": "Run",
     "Repository.Attach.Annotations": "false",
     "Repository.Attach.JavaDocs": "false",
     "Repository.Attach.Sources": "false",
@@ -66,7 +68,22 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.TabelaDeDecisaoTest">
+    <configuration name="EquivalenciaTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SistemadeIngressos" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="TestesFuncionais.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="TestesFuncionais" />
+      <option name="MAIN_CLASS_NAME" value="TestesFuncionais.EquivalenciaTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="SistemadeIngressosTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="SistemadeIngressos" />
       <option name="PACKAGE_NAME" value="" />
@@ -76,8 +93,25 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="TabelaDeDecisaoTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SistemadeIngressos" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="TestesFuncionais.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="TestesFuncionais" />
+      <option name="MAIN_CLASS_NAME" value="TestesFuncionais.TabelaDeDecisaoTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.TabelaDeDecisaoTest" />
+        <item itemvalue="JUnit.EquivalenciaTest" />
         <item itemvalue="JUnit.SistemadeIngressosTest" />
       </list>
     </recent_temporary>
@@ -102,7 +136,7 @@
       <workItem from="1734221349497" duration="2577000" />
       <workItem from="1734319012583" duration="5224000" />
       <workItem from="1735922628593" duration="138000" />
-      <workItem from="1740432504225" duration="828000" />
+      <workItem from="1740432504225" duration="3566000" />
     </task>
     <servers />
   </component>
