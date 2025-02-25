@@ -1,4 +1,4 @@
-package main.java.com.example.processadorcontas.service;
+package com.example.processadorcontas.service;
 
 import com.example.processadorcontas.model.Conta;
 import com.example.processadorcontas.model.Fatura;

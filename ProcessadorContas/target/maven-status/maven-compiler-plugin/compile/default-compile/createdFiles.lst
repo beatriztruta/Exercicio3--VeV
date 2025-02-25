@@ -1,0 +1,8 @@
+ProcessadorContasController.class
+com/example/processadorcontas/model/TipoPagamento.class
+com/example/processadorcontas/Application.class
+com/example/processadorcontas/dto/ProcessamentoRequest.class
+com/example/processadorcontas/model/Fatura.class
+com/example/processadorcontas/model/Pagamento.class
+com/example/processadorcontas/model/Conta.class
+com/example/processadorcontas/service/ProcessadorContasService.class

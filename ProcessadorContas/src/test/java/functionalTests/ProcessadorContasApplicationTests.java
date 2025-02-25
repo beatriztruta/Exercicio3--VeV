@@ -2,9 +2,10 @@ package test.java.functionalTests;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import com.example.processadorcontas.Application;
 
-@SpringBootTest
-public class ProcessadorContasApplicationTests {
+@SpringBootTest(classes = Application.class)
+class ProcessadorContasApplicationTests {
 
     @Test
     public void contextLoads() {

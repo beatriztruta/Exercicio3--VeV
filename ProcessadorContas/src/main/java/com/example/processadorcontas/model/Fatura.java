@@ -1,4 +1,4 @@
-package main.java.com.example.processadorcontas.model;
+package com.example.processadorcontas.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

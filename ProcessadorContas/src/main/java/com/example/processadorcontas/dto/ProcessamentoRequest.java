@@ -1,4 +1,4 @@
-package main.java.com.example.processadorcontas.dto;
+package com.example.processadorcontas.dto;
 
 import com.example.processadorcontas.model.Conta;
 import com.example.processadorcontas.model.Fatura;

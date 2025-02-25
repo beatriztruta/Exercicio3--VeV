@@ -1,4 +1,5 @@
-package main.java.com.example.processadorcontas.controller;
+import com.example.processadorcontas.service.ProcessadorContasService;
+
 
 import com.example.processadorcontas.dto.ProcessamentoRequest;
 import com.example.processadorcontas.model.Fatura;

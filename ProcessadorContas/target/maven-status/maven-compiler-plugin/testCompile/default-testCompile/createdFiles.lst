@@ -1,0 +1,5 @@
+test/java/functionalTests/ProcessadorContasApplicationTests.class
+test/java/functionalTests/PagamentoTests.class
+test/java/functionalTests/ParticaoEquivalenciaTests.class
+test/java/functionalTests/TabelaDecisaoTests.class
+test/java/functionalTests/AnaliseDeValoresLimitesTests.class
