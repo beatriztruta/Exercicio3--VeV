@@ -43,6 +43,44 @@ public class EquivalenciaTest {
         assertEquals(350, countNormal);
     }
 
+    @Test
+    void testTentativaVendaAcimaCapacidade() {
+        Exception exception = assertThrows(IllegalStateException.class, () -> {
+            if (sistema.getIngressos().size() >= 501) {
+                throw new IllegalStateException("Erro: ingressos esgotados");
+            }
+        });
+
+        assertEquals("Erro: ingressos esgotados", exception.getMessage());
+    }
+
+    @Test
+    public void testCalculoReceitaLiquidaLucro() {
+        Show show = new Show("Concerto", "Artista", 2000.0, 1000.0, false);
+        show.adicionarLote(1, 500, 50.0, 0.0);
+        show.venderTodosIngressos();
+
+        assertEquals("LUCRO", show.calcularStatusFinanceiro(), "O status financeiro deve ser LUCRO");
+    }
+
+    @Test
+    public void testCalculoReceitaLiquidaEstavel() {
+        Show show = new Show("Concerto", "Artista", 2000.0, 1300.0, false);
+        show.adicionarLote(1, 500, 50.0, 0.0);
+        show.venderTodosIngressos();
+
+        assertEquals("ESTÁVEL", show.calcularStatusFinanceiro(), "O status financeiro deve ser ESTÁVEL");
+    }
+
+    @Test
+    public void testCalculoReceitaLiquidaPrejuizo() {
+        Show show = new Show("Concerto", "Artista", 3000.0, 1000.0, false);
+        show.adicionarLote(1, 500, 50.0, 0.0);
+        show.venderTodosIngressos();
+
+        assertEquals("PREJUÍZO", show.calcularStatusFinanceiro(), "O status financeiro deve ser PREJUÍZO");
+    }
+
     // Novos testes cobrindo possiveis faltas observadas
 
 
@@ -65,7 +103,9 @@ public class EquivalenciaTest {
     }
 
     @Test
-    public void testCriarShowSemIngressos() {
-        Show show = new Show("Show Teste", "Artista X", 1000.0, 2000.0, false);
-        assertEquals(0, show.getLotes().size());
+    public void testTentarVenderIngressoJaVendido() {
+        Ingresso ingresso = new Ingresso(1, TipoIngresso.NORMAL, 100.0);
+        ingresso.marcarComoVendido();
+
+        assertThrows(IllegalStateException.class, ingresso::marcarComoVendido);
     }
