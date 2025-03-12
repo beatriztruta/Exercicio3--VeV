@@ -1,4 +1,4 @@
-package service;
+package com.example.Ingressos.service;
 
 import model.Show;
 import model.Ingresso;

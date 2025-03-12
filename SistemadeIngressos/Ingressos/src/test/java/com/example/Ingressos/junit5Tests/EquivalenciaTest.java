@@ -1,4 +1,4 @@
-package TestesFuncionais;
+package com.example.Ingressos.junit5Tests;
 
 import model.Ingresso;
 import model.Show;
@@ -10,6 +10,7 @@ import util.TipoIngresso;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EquivalenciaTest {
     private SistemadeIngressos sistema;
@@ -80,5 +81,33 @@ public class EquivalenciaTest {
 
         assertEquals("PREJUÍZO", show.calcularStatusFinanceiro(), "O status financeiro deve ser PREJUÍZO");
     }
-}
 
+    // Novos testes cobrindo possiveis faltas observadas
+
+
+    @Test
+    public void testCriarSistemaComDescontoInvalido() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new SistemadeIngressos(1, 50, 50.0, 0.3);
+        });
+    }
+
+    @Test
+    public void testVenderParcialmenteIngressos() {
+        SistemadeIngressos sistema = new SistemadeIngressos(1, 10, 100.0, 0.05);
+        List<Ingresso> ingressos = sistema.getIngressos();
+
+        ingressos.get(0).marcarComoVendido();
+        ingressos.get(1).marcarComoVendido();
+
+        assertEquals(2, ingressos.stream().filter(Ingresso::isVendido).count());
+    }
+
+    @Test
+    public void testTentarVenderIngressoJaVendido() {
+        Ingresso ingresso = new Ingresso(1, TipoIngresso.NORMAL, 100.0);
+        ingresso.marcarComoVendido();
+
+        assertThrows(IllegalStateException.class, ingresso::marcarComoVendido);
+    }
+}

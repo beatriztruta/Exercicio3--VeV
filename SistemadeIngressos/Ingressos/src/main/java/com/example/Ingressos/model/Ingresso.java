@@ -1,4 +1,4 @@
-package model;
+package com.example.Ingressos.model;
 
 import util.TipoIngresso;
 

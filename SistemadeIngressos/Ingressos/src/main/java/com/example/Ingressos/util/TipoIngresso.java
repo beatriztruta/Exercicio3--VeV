@@ -1,4 +1,5 @@
-package util;
+package com.example.Ingressos.util;
+
 public enum TipoIngresso {
     NORMAL,
     VIP,

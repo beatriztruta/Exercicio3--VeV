@@ -1,4 +1,5 @@
-package TestesFuncionais;
+package com.example.Ingressos.junit5Tests;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import model.Ingresso;
@@ -76,4 +77,32 @@ class ValoresLimitesTest {
         int totalVendido = 10;
         assertEquals(10, sistema.getIngressos().size());
     }
+
+
+    // novos testes que cobrem possiveis faltas dos sistema
+
+    @Test
+    public void testCalculoStatusFinanceiro() {
+        Show show = new Show("Show Exemplo", "Banda A", 1000.0, 2000.0, true);
+        show.adicionarLote(1, 20, 200.0, 0.1);
+        show.venderTodosIngressos();
+
+        assertEquals("LUCRO", show.calcularStatusFinanceiro());
+    }
+    @Test
+    public void testCriarShowSemIngressos() {
+        Show show = new Show("Show Teste", "Artista X", 1000.0, 2000.0, false);
+        assertEquals(0, show.getLotes().size());
+    }
+    @Test
+    public void testCalculoReceitaComDesconto() {
+        SistemadeIngressos sistema = new SistemadeIngressos(1, 5, 200.0, 0.1);
+        List<Ingresso> ingressos = sistema.getIngressos();
+
+        ingressos.forEach(Ingresso::marcarComoVendido);
+
+        assertEquals(900.0, sistema.calcularReceita(), 0.01);
+    }
+
+
 }
