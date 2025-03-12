@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Conta.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ProcessadorContas</a> &gt; <a href="index.source.html" class="el_package">com.example.processadorcontas.model</a> &gt; <span class="el_source">Conta.java</span></div><h1>Conta.java</h1><pre class="source lang-java linenums">package com.example.processadorcontas.model;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+<span class="fc" id="L6">public class Conta {</span>
+    private String codigoConta;
+    private LocalDate dataConta;
+    private LocalDate dataPagamento;
+    private BigDecimal valorPago;
+    private TipoPagamento tipoPagamento;
+
+    // Getters e Setters
+
+    public String getCodigoConta() {
+<span class="nc" id="L16">        return codigoConta;</span>
+    }
+
+    public void setCodigoConta(String codigoConta) {
+<span class="fc" id="L20">        this.codigoConta = codigoConta;</span>
+<span class="fc" id="L21">    }</span>
+
+    public LocalDate getDataConta() {
+<span class="fc" id="L24">        return dataConta;</span>
+    }
+
+    public void setDataConta(LocalDate dataConta) {
+<span class="fc" id="L28">        this.dataConta = dataConta;</span>
+<span class="fc" id="L29">    }</span>
+
+    public LocalDate getDataPagamento() {
+<span class="fc" id="L32">        return dataPagamento;</span>
+    }
+
+    public void setDataPagamento(LocalDate dataPagamento) {
+<span class="fc" id="L36">        this.dataPagamento = dataPagamento;</span>
+<span class="fc" id="L37">    }</span>
+
+    public BigDecimal getValorPago() {
+<span class="fc" id="L40">        return valorPago;</span>
+    }
+
+    public void setValorPago(BigDecimal valorPago) {
+<span class="fc" id="L44">        this.valorPago = valorPago;</span>
+<span class="fc" id="L45">    }</span>
+
+    public TipoPagamento getTipoPagamento() {
+<span class="fc" id="L48">        return tipoPagamento;</span>
+    }
+
+    public void setTipoPagamento(TipoPagamento tipoPagamento) {
+<span class="fc" id="L52">        this.tipoPagamento = tipoPagamento;</span>
+<span class="fc" id="L53">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

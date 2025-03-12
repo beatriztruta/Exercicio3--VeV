@@ -1,12 +1,16 @@
+
 package junit5Tests;
 
+import com.example.processadorcontas.model.*;
 import com.example.processadorcontas.service.ProcessadorContasService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProcessadorContasApplicationTests {
-
     private ProcessadorContasService service;
 
     @BeforeEach
@@ -15,101 +19,69 @@ class ProcessadorContasApplicationTests {
     }
 
     @Test
-    void testProcessamentoValido() {
-        assertDoesNotThrow(() -> {
-            service.processarConta("conta_valida", 100);
-        });
-    }
-
-    @Test
-    void testProcessamentoContaInexistente() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            service.processarConta(null);
-        });
-
-        assertEquals("Conta não pode ser nula", exception.getMessage());
-    }
-
-    @Test
-    void testPagamentoValorNegativo() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            service.realizarPagamento(new Pagamento(-500, TipoPagamento.DEBITO));
-        });
-
-        assertEquals("Valor do pagamento deve ser positivo", exception.getMessage());
-    }
-
-    @Test
-    void testProcessarFaturaPaga() {
+    void testProcessarFaturaPagamentoValidoBoleto() {
         Fatura fatura = new Fatura();
-        fatura.setPaga(true);
+        fatura.setData(LocalDate.now());
+        fatura.setValorTotal(new BigDecimal("200"));
 
-        boolean resultado = service.processarFatura(fatura);
+        Conta conta = new Conta();
+        conta.setTipoPagamento(TipoPagamento.BOLETO);
+        conta.setValorPago(new BigDecimal("200"));
+        conta.setDataConta(LocalDate.now());
+        conta.setDataPagamento(LocalDate.now());
 
-        assertFalse(resultado, "Uma fatura já paga não deve ser processada novamente.");
+        Fatura resultado = service.processarFatura(fatura, List.of(conta));
+        assertEquals("PAGA", resultado.getStatus());
     }
 
     @Test
-    void testProcessarPagamentoComValorZero() {
-        Pagamento pagamento = new Pagamento();
-        pagamento.setValor(0);
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            service.processarPagamento(pagamento);
-        });
-    }
-
-    @Test
-    void testProcessarPagamentoComTipoInvalido() {
-        Pagamento pagamento = new Pagamento();
-        pagamento.setTipoPagamento(null);
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            service.processarPagamento(pagamento);
-        });
-
-        assertEquals("Tipo de pagamento inválido", exception.getMessage());
-    }
-
-    @Test
-    void testProcessarContaComValorAlto() {
-        assertDoesNotThrow(() -> {
-            service.processarConta("conta_valida", 1000000);
-        });
-    }
-
-    @Test
-    void testProcessarPagamentoDuplicado() {
-        Pagamento pagamento = new Pagamento(200, TipoPagamento.CREDITO);
-
-        assertDoesNotThrow(() -> service.processarPagamento(pagamento));
-
-        Exception exception = assertThrows(IllegalStateException.class, () -> {
-            service.processarPagamento(pagamento);
-        });
-
-        assertEquals("Pagamento já processado", exception.getMessage());
-    }
-
-    @Test
-    void testProcessarFaturaComValorZero() {
+    void testProcessarFaturaValorBoletoInvalido() {
         Fatura fatura = new Fatura();
-        fatura.setValor(0);
+        fatura.setValorTotal(new BigDecimal("6000"));
+        fatura.setData(LocalDate.now());
+
+        Conta conta = new Conta();
+        conta.setTipoPagamento(TipoPagamento.BOLETO);
+        conta.setDataConta(LocalDate.now().minusDays(10));
+        conta.setDataPagamento(LocalDate.now());
+        conta.setValorPago(new BigDecimal("6000"));
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            service.processarFatura(fatura);
+            service.processarFatura(fatura, List.of(conta));
         });
-
-        assertEquals("Valor da fatura deve ser maior que zero", exception.getMessage());
+        assertEquals("Valor do boleto fora do limite permitido", exception.getMessage());
     }
 
     @Test
-    void testProcessarContaSuspensa() {
-        Exception exception = assertThrows(RuntimeException.class, () -> {
-            service.processarConta("conta_suspensa", 500);
-        });
+    void testProcessarFaturaCartaoCreditoPeriodoInsuficiente() {
+        Fatura fatura = new Fatura();
+        fatura.setData(LocalDate.now());
+        fatura.setValorTotal(new BigDecimal("300"));
 
-        assertEquals("Conta está suspensa", exception.getMessage());
+        Conta conta = new Conta();
+        conta.setTipoPagamento(TipoPagamento.CARTAO_CREDITO);
+        conta.setDataConta(LocalDate.now().minusDays(10)); // menos de 15 dias exigidos
+        conta.setDataPagamento(LocalDate.now());
+        conta.setValorPago(new BigDecimal("300"));
+
+        Fatura resultado = service.processarFatura(fatura, List.of(conta));
+        assertEquals("PENDENTE", resultado.getStatus());
     }
 
+    @Test
+    void testProcessarFaturaTransferenciaDataInvalida() {
+        Fatura fatura = new Fatura();
+        fatura.setData(LocalDate.now());
+        fatura.setValorTotal(new BigDecimal("150"));
+
+        Conta conta = new Conta();
+        conta.setTipoPagamento(TipoPagamento.TRANSFERENCIA_BANCARIA);
+        conta.setDataConta(LocalDate.now().plusDays(2)); // Data após a fatura
+        conta.setDataPagamento(LocalDate.now());
+        conta.setValorPago(new BigDecimal("150"));
+
+        Fatura resultado = service.processarFatura(fatura, List.of(conta));
+        assertEquals("PENDENTE", resultado.getStatus());
+        assertTrue(resultado.getPagamentos().isEmpty());
+    }
 }

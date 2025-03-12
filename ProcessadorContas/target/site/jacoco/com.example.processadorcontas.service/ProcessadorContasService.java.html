@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProcessadorContasService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ProcessadorContas</a> &gt; <a href="index.source.html" class="el_package">com.example.processadorcontas.service</a> &gt; <span class="el_source">ProcessadorContasService.java</span></div><h1>ProcessadorContasService.java</h1><pre class="source lang-java linenums">package com.example.processadorcontas.service;
+
+import com.example.processadorcontas.model.Conta;
+import com.example.processadorcontas.model.Fatura;
+import com.example.processadorcontas.model.Pagamento;
+import com.example.processadorcontas.model.TipoPagamento;
+import java.math.BigDecimal;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.stereotype.Service;
+
+@Service
+<span class="fc" id="L14">public class ProcessadorContasService {</span>
+
+    public Fatura processarFatura(Fatura fatura, List&lt;Conta&gt; contas) {
+<span class="fc" id="L17">        BigDecimal somaPagamentos = BigDecimal.ZERO;</span>
+<span class="fc" id="L18">        List&lt;Pagamento&gt; pagamentosGerados = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L20" title="All 2 branches covered.">        for (Conta conta : contas) {</span>
+<span class="fc" id="L21">            Pagamento pagamento = new Pagamento();</span>
+<span class="fc" id="L22">            pagamento.setTipoPagamento(conta.getTipoPagamento());</span>
+<span class="fc" id="L23">            pagamento.setDataPagamento(conta.getDataPagamento());</span>
+<span class="fc" id="L24">            BigDecimal valor = conta.getValorPago();</span>
+
+<span class="fc bfc" id="L26" title="All 2 branches covered.">            if (conta.getTipoPagamento() == TipoPagamento.BOLETO) {</span>
+                // Validação: valor mínimo R$ 0,01 e máximo R$ 5.000,00
+<span class="fc bfc" id="L28" title="All 4 branches covered.">                if (valor.compareTo(new BigDecimal(&quot;0.01&quot;)) &lt; 0 || valor.compareTo(new BigDecimal(&quot;5000.00&quot;)) &gt; 0) {</span>
+<span class="fc" id="L29">                    throw new IllegalArgumentException(&quot;Valor do boleto fora do limite permitido&quot;);</span>
+                }
+                // Se o boleto foi pago com atraso, adiciona 10%
+<span class="fc bfc" id="L32" title="All 2 branches covered.">                if (conta.getDataPagamento().isAfter(conta.getDataConta())) {</span>
+<span class="fc" id="L33">                    valor = valor.multiply(new BigDecimal(&quot;1.10&quot;));</span>
+                }
+<span class="fc bfc" id="L35" title="All 2 branches covered.">            } else if (conta.getTipoPagamento() == TipoPagamento.CARTAO_CREDITO) {</span>
+                // Somente inclui se a data da conta for de pelo menos 15 dias anterior à data
+                // da fatura
+<span class="fc" id="L38">                long dias = ChronoUnit.DAYS.between(conta.getDataConta(), fatura.getData());</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">                if (dias &lt; 15) {</span>
+<span class="fc" id="L40">                    continue; // Não inclui este pagamento</span>
+                }
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">            } else if (conta.getTipoPagamento() == TipoPagamento.TRANSFERENCIA_BANCARIA) {</span>
+                // Só inclui se a data da conta for igual ou anterior à data da fatura
+<span class="fc bfc" id="L44" title="All 2 branches covered.">                if (conta.getDataConta().isAfter(fatura.getData())) {</span>
+<span class="fc" id="L45">                    continue;</span>
+                }
+            }
+
+<span class="fc" id="L49">            pagamento.setValor(valor);</span>
+<span class="fc" id="L50">            pagamentosGerados.add(pagamento);</span>
+<span class="fc" id="L51">            somaPagamentos = somaPagamentos.add(valor);</span>
+<span class="fc" id="L52">        }</span>
+
+        // Define o status da fatura conforme a soma dos pagamentos válidos
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        if (somaPagamentos.compareTo(fatura.getValorTotal()) &gt;= 0) {</span>
+<span class="fc" id="L56">            fatura.setStatus(&quot;PAGA&quot;);</span>
+        } else {
+<span class="fc" id="L58">            fatura.setStatus(&quot;PENDENTE&quot;);</span>
+        }
+<span class="fc" id="L60">        fatura.setPagamentos(pagamentosGerados);</span>
+<span class="fc" id="L61">        return fatura;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
