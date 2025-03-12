@@ -1,11 +1,13 @@
 package com.example.Ingressos.junit5Tests;
 
-import model.Ingresso;
-import model.Show;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import service.SistemadeIngressos;
-import util.TipoIngresso;
+
+
+import com.exemplo.service.SistemadeIngressos;
+import com.exemplo.model.Show;
+import com.exemplo.model.Ingresso;
+import com.exemplo.model.TipoIngresso;
 
 import java.util.List;
 

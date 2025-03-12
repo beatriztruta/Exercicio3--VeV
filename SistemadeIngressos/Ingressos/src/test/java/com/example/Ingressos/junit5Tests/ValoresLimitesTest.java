@@ -2,11 +2,13 @@ package com.example.Ingressos.junit5Tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import model.Ingresso;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import service.SistemadeIngressos;
-import util.TipoIngresso;
+
+import com.exemplo.service.SistemadeIngressos;
+import com.exemplo.model.Show;
+import com.exemplo.model.Ingresso;
+import com.exemplo.model.TipoIngresso;
 
 class ValoresLimitesTest {
     private SistemadeIngressos sistema;
